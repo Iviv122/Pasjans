@@ -1,0 +1,15 @@
+/HHD/MyCodeBase/C#/Pasjans/src/bin/Debug/net9.0/src
+/HHD/MyCodeBase/C#/Pasjans/src/bin/Debug/net9.0/src.deps.json
+/HHD/MyCodeBase/C#/Pasjans/src/bin/Debug/net9.0/src.runtimeconfig.json
+/HHD/MyCodeBase/C#/Pasjans/src/bin/Debug/net9.0/src.dll
+/HHD/MyCodeBase/C#/Pasjans/src/bin/Debug/net9.0/src.pdb
+/HHD/MyCodeBase/C#/Pasjans/src/obj/Debug/net9.0/src.GeneratedMSBuildEditorConfig.editorconfig
+/HHD/MyCodeBase/C#/Pasjans/src/obj/Debug/net9.0/src.AssemblyInfoInputs.cache
+/HHD/MyCodeBase/C#/Pasjans/src/obj/Debug/net9.0/src.AssemblyInfo.cs
+/HHD/MyCodeBase/C#/Pasjans/src/obj/Debug/net9.0/src.csproj.CoreCompileInputs.cache
+/HHD/MyCodeBase/C#/Pasjans/src/obj/Debug/net9.0/src.sourcelink.json
+/HHD/MyCodeBase/C#/Pasjans/src/obj/Debug/net9.0/src.dll
+/HHD/MyCodeBase/C#/Pasjans/src/obj/Debug/net9.0/refint/src.dll
+/HHD/MyCodeBase/C#/Pasjans/src/obj/Debug/net9.0/src.pdb
+/HHD/MyCodeBase/C#/Pasjans/src/obj/Debug/net9.0/src.genruntimeconfig.cache
+/HHD/MyCodeBase/C#/Pasjans/src/obj/Debug/net9.0/ref/src.dll

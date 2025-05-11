@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "9JWVu4FJs1s=",
+  "success": true,
+  "projectFilePath": "/HHD/MyCodeBase/C#/Pasjans/src/src.csproj",
+  "expectedPackageFiles": [
+    "/home/van/.nuget/packages/microsoft.aspnetcore.app.ref/9.0.4/microsoft.aspnetcore.app.ref.9.0.4.nupkg.sha512"
+  ],
+  "logs": []
+}
