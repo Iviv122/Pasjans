@@ -8,10 +8,10 @@ namespace Pasjans
     public class Card
     {
         // symbole kart
-        private static readonly char SpadeSymbol = '\u2660';
-        private static readonly char ClubSymbol = '\u2663';
-        private static readonly char HeartSymbol = '\u2665';
-        private static readonly char DiamondSymbol = '\u2666';
+        public const char SpadeSymbol = '\u2660';
+        public const char ClubSymbol = '\u2663';
+        public const char HeartSymbol = '\u2665';
+        public const char DiamondSymbol = '\u2666';
 
         public const int MinValue = 1;
         public const int MaxValue = 13;
@@ -43,6 +43,24 @@ namespace Pasjans
             }
             this.Symbol = Symbol;
         }
+
+        public static char SymbolToString(CardSymbol Symbol)
+        {
+            switch (Symbol)
+            {
+                case CardSymbol.Clubs:
+                    return ClubSymbol;
+                case CardSymbol.Diamonds:
+                    return DiamondSymbol;
+                case CardSymbol.Hearts:
+                    return HeartSymbol;
+                case CardSymbol.Spades:
+                    return SpadeSymbol;
+                default:
+                    throw new InvalidEnumArgumentException();
+            }
+        }
+
         // sposob wypisywanja karty
         public override string ToString()
         {
@@ -52,10 +70,10 @@ namespace Pasjans
                 case MinValue:
                     output += "A";
                     break;
-                case MaxValue-2:
+                case MaxValue - 2:
                     output += "J";
                     break;
-                case MaxValue-1:
+                case MaxValue - 1:
                     output += "Q";
                     break;
                 case MaxValue:

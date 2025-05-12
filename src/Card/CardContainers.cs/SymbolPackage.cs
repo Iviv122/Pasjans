@@ -18,7 +18,14 @@ namespace Pasjans
             nextValue+=1;
             return new ActionResponse<string>("Card was submitted");
         }
-
+        public override string ToString()
+        {
+            if(nextValue == Card.MinValue){
+                return "Empty:" + Card.SymbolToString(cardSymbol);
+            }
+            Card tmpCard = new Card(nextValue-1,cardSymbol);
+            return tmpCard.ToString(); 
+        }
     } 
 
 }

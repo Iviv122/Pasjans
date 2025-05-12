@@ -2,9 +2,8 @@ namespace Pasjans
 {
 
     // Our column in game where we collect cards
-    class CardColumn 
+    public class CardColumn 
     {
-
         private int knownCards = 0;
         LinkedList<Card> cards;
 

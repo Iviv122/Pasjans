@@ -3,7 +3,7 @@ namespace Pasjans
     /// <summary>
     /// Simple Standart 52 cards deck no jockers cardpile
     /// </summary>
-    class CardDeck
+    public class CardDeck
     {
         private List<Card> cards;
         int currentCardIndex = 0;
