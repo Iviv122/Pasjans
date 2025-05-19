@@ -8,5 +8,9 @@ namespace IO
             Value =Symbol;
             Color = color;
         }
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
     }
 }

@@ -1,8 +1,10 @@
+using System.Reflection.Metadata.Ecma335;
+
 namespace Pasjans
 {
 
     // Our column in game where we collect cards
-    public class CardColumn 
+    public class CardColumn
     {
         private int knownCards = 0;
         LinkedList<Card> cards;
@@ -15,9 +17,10 @@ namespace Pasjans
         // simple case
         public ActionResponse<String> Append(Card card)
         {
-            if(cards.Count == 0){
+            if (cards.Count == 0)
+            {
                 cards.AddLast(card);
-            return new ActionResponse<string>("Card was added as first");
+                return new ActionResponse<string>("Card was added as first");
             }
             if (cards.Last?.Value.Color == card.Color)
             {
@@ -30,6 +33,10 @@ namespace Pasjans
 
             cards.AddLast(card);
             return new ActionResponse<string>("Card was added");
+        }
+        public Tuple<LinkedList<Card>, int> GetListUnkown()
+        {
+            return new Tuple<LinkedList<Card>, int>(cards, knownCards);
         }
         public ActionResponse<String> Append(LinkedList<Card> newCards)
         {
@@ -77,6 +84,18 @@ namespace Pasjans
             }
 
             return new ActionResponse<LinkedList<Card>>(newCards, "Got cards");
+        }
+        public ActionResponse<Card> GetCard()
+        {
+            if (cards.Count != 0)
+            {
+                return new ActionResponse<Card>("No card");
+            }
+
+            Card pulled = cards.ElementAt(0);
+            cards.Remove(pulled);
+
+            return new ActionResponse<Card>(pulled, "Card tooked");
         }
         public override string ToString()
         {

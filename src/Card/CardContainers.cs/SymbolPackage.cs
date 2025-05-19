@@ -5,6 +5,9 @@ namespace Pasjans
     {
         int nextValue = Card.MinValue;
         CardSymbol cardSymbol;
+        public CardSymbol CardSymbol{
+            get{ return cardSymbol;}
+        }
         public SymbolPackage(CardSymbol symbol){
             cardSymbol = symbol;
         }
@@ -17,6 +20,9 @@ namespace Pasjans
             }
             nextValue+=1;
             return new ActionResponse<string>("Card was submitted");
+        }
+        public int NextCardValue(){
+            return nextValue;
         }
         public override string ToString()
         {
