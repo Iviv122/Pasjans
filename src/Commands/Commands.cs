@@ -1,27 +1,28 @@
 namespace Pasjans
 {
-    /*
-    class TakeCard : Command
+    public class TakeCommand : Command
     {
-        override public void Execute()
+        public TakeCommand(Game game) : base(game)
+        {
+
+        }
+
+        public override bool Execute(int x, int y)
         {
             throw new NotImplementedException();
         }
     }
 
-    class Shaffle : Command
+    public class PutCommand : Command
     {
-        override public void Execute()
+        public PutCommand(Game game) : base(game)
+        {
+
+        }
+
+        public override bool Execute(int x, int y)
         {
             throw new NotImplementedException();
         }
     }
-    class PutInFinal : Command
-    {
-        override public void Execute()
-        {
-            throw new NotImplementedException();
-        }
-    }
-    */
 }

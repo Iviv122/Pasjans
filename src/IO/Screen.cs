@@ -26,13 +26,22 @@ namespace IO
             width = 120;
             height = 35;
             screen = new Point[height, width];
-            ClearScreen();
+            Start();
         }
         public Screen(int Width, int Height)
         {
             width = Width;
             height = Height;
             screen = new Point[height, width];
+            Start();
+        }
+        ~Screen()
+        {
+            Console.CursorVisible = true;    
+        }
+        void Start()
+        {
+            Console.CursorVisible = false;
             ClearScreen();
         }
         public void ClearScreen()

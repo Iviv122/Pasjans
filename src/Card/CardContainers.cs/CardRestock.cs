@@ -3,50 +3,61 @@ namespace Pasjans
     public class CardRestock
     {
         readonly List<Card> _currentCards;
-        readonly  List<Card> _leftedCards = new();
+        readonly  LinkedList<Card> _leftedCards = new();
 
         public CardRestock(List<Card> leftover)
         {
             _currentCards = leftover;
         }
 
-        public ActionResponse<Card> PeekCardCurrent()
+        public Card? PeekCardCurrent()
         {
-            if(_currentCards.Count == 0){
-                return new ActionResponse<Card>("No cards left in current pile");
+            if (_currentCards.Count == 0)
+            {
+                return null;
             }
-            return new ActionResponse<Card>(_currentCards[0],$"It is {_currentCards[0]}");
+            return _currentCards[0];
         }
-        public ActionResponse<Card> PeekCardCurrent(int index)
+        public Card? PeekCardCurrent(int index)
         {
             if(_currentCards.Count-1 < index){
-                return new ActionResponse<Card>("No cards in such index");
+                return null;
             }
-            return new ActionResponse<Card>(_currentCards[index],$"It is {_currentCards[index]}");
+            return _currentCards[index];
         }
-        public ActionResponse<Card> PeekCardLefted()
+        public Card? PeekCardLefted()
         {
-            return new ActionResponse<Card>(_currentCards[0],"Peeked Card ");
-        }
-        public ActionResponse<Card> PeekCardLefted(int index)
-        {
-            if(_currentCards.Count-1 < index){
-                return new ActionResponse<Card>("No cards in such index");
+            if (_leftedCards.Count == 0) {
+                return null;
             }
-            return new ActionResponse<Card>(_currentCards[index],$"It is {_currentCards[index]}");
+            return _leftedCards.ElementAt(0);
         }
-        public ActionResponse<Card> TakeCard()
+        public Card? PeekCardLefted(int index)
         {
-            if(_currentCards.Count == 0){
-                return new ActionResponse<Card>("No cards to take");
+            if(index < 0 || index >= _leftedCards.Count){
+                return null; 
+            }
+            return _leftedCards.ElementAt(index);
+        }
+        public void Next()
+        {
+            if (_currentCards.Count == 0)
+            {
+                return;
             }
             Card taken = _currentCards[0];
             _currentCards.RemoveAt(0);
-            return new ActionResponse<Card>(taken,$"Took {taken}");
+            _leftedCards.AddFirst(taken);
         }
-        public void ReturnCard(Card card)
+        public Card? TakeCard()
         {
-            _leftedCards.Add(card);
+            if (_leftedCards.Count == 0)
+            {
+                return null;
+            }
+            Card taken = _leftedCards.ElementAt(0);
+            _leftedCards.RemoveFirst();
+            return taken;
         }
         public void Shuffle()
         {
