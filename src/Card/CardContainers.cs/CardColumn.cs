@@ -1,56 +1,39 @@
 
+using System.Globalization;
+using System.Runtime.CompilerServices;
+
 namespace Pasjans
 {
 
     // Our column in game where we collect cards
-    public class CardColumn
+    public class CardColumn : ITake, IPut
     {
-        private int knownCards = 0;
+        private int unknownCards = 0;
         LinkedList<Card> cards;
 
         public CardColumn(LinkedList<Card> cards)
         {
             this.cards = cards;
-            knownCards = cards.Count() - 1;
-        }
-        // simple case
-        public ActionResponse<String> Append(Card card)
-        {
-            if (cards.Count == 0)
-            {
-                cards.AddLast(card);
-                return new ActionResponse<string>("Card was added as first");
-            }
-            if (cards.Last?.Value.Color == card.Color)
-            {
-                return new ActionResponse<string>("Same color for cards");
-            }
-            if (cards.Last?.Value.Value != card.Value + 1)
-            {
-                return new ActionResponse<string>("Incorrect order");
-            }
-
-            cards.AddLast(card);
-            return new ActionResponse<string>("Card was added");
+            unknownCards = cards.Count - 1; // index
         }
         public Tuple<LinkedList<Card>, int> GetListUnkown()
         {
-            return new Tuple<LinkedList<Card>, int>(cards, knownCards);
+            return new Tuple<LinkedList<Card>, int>(cards, unknownCards);
         }
-        public ActionResponse<String> Append(LinkedList<Card> newCards)
+        public void Put(LinkedList<Card> newCards)
         {
             if (cards.Count == 0)
             {
                 cards = newCards;
-                return new ActionResponse<string>("Cards were placed as first");
+                return; // "Cards were placed as first"
             }
             if (cards.Last?.Value.Color == newCards.First?.Value.Color)
             {
-                return new ActionResponse<string>("Same color for first and last cards");
+                return; // "Same color for first and last cards"
             }
             if (cards.Last?.Value.Value - 1 == newCards.First?.Value.Value)
             {
-                return new ActionResponse<string>("Incorrect order");
+                return; // "Incorrect order"
             }
 
             // dodajemy karty do nowej kolumny
@@ -59,49 +42,40 @@ namespace Pasjans
                 cards.AddLast(card);
             }
 
-            return new ActionResponse<string>("Cards were added");
+            return; // "Cards were added"
         }
         /// <summary>
         /// Get some cards from column
         /// </summary>
-        /// <param name="firstIndex"></param>
-        /// <returns>Returns list and confirm message or null and deny message</returns>
-        public ActionResponse<LinkedList<Card>> GetCards(int firstIndex)
+        /// <param name="startIndex"></param>
+        /// <returns>Returns list or null and deny message</returns>
+        public LinkedList<Card>? Take(int startIndex)
         {
-
-            if (firstIndex < knownCards)
+            if (startIndex < unknownCards)
             {
-                return new ActionResponse<LinkedList<Card>>("trying to move incorect card");
+                return null;
             }
 
-            LinkedList<Card> newCards = new LinkedList<Card>();
-            for (int i = firstIndex; i < cards.Count; i++)
+            LinkedList<Card> newCards = new LinkedList<Card>(); // empty
+            for (int i = 0; i < cards.Count; i++)
             {
-                Card pulled = cards.ElementAt(i);
-                cards.Remove(pulled);
-                newCards.AddLast(pulled);
+                if (i < unknownCards)
+                {
+                    continue;
+                }
+                else
+                {
+                    newCards.AddLast(cards.ElementAt(i));
+                }
             }
-
-            return new ActionResponse<LinkedList<Card>>(newCards, "Got cards");
-        }
-        public ActionResponse<Card> GetCard()
-        {
-            if (cards.Count != 0)
-            {
-                return new ActionResponse<Card>("No card");
-            }
-
-            Card pulled = cards.ElementAt(0);
-            cards.Remove(pulled);
-
-            return new ActionResponse<Card>(pulled, "Card tooked");
+            return newCards;
         }
         public override string ToString()
         {
             string output = "| ";
             for (int i = 0; i < cards.Count; i++)
             {
-                if (i < knownCards)
+                if (i < unknownCards)
                 {
                     output += "##";
                 }

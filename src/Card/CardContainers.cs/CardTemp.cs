@@ -24,17 +24,11 @@ namespace Pasjans
             cards = new();
         }
 
-        public void Add(Card nCard)
+        public void Add(LinkedList<Card>? nCards)
         {
-            if (cards == null)
-            {
-                cards = new();
+            if (nCards == null ||nCards.Count == 0) {
+                return;
             }
-            cards.AddFirst(nCard);
-        }
-
-        public void Add(LinkedList<Card> nCards)
-        {
             cards = nCards;
         }
         public LinkedList<Card> Take()

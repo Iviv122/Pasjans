@@ -1,22 +1,35 @@
 namespace Pasjans
 {
     // Command pattern so we can undo and do turns =)
-    public abstract class Command{
+    public abstract class Command
+    {
 
-        protected Game game;
+        protected GameTable game;
         // Supressing warning
-        protected Game backup = null!;
-        public Command(Game game)
+        protected GameTable backup = null!;
+        public Command(GameTable game)
         {
             this.game = game;
             saveBackup();
         }
-        public void saveBackup(){
-            backup = game.Clone(); 
+        public void saveBackup()
+        {
+            backup = game.Clone();
         }
-        public void undo(){
+        public void undo()
+        {
             game = backup;
         }
-        abstract public bool Execute(int x, int y);
+        virtual public bool Execute(int x, int y)
+        {
+            return false;
+        }
+        virtual public bool Execute(int x, int y, ITake source)
+        {
+            return false;
+        }
+        virtual public bool Execute(int x, int y,IPut destination) {
+            return false;
+        }
     }   
 }

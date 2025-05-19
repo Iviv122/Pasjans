@@ -1,10 +1,11 @@
 using System.ComponentModel;
+using System.Dynamic;
 using IO;
 
 namespace Pasjans
 {
     // Entry Point and Installer + Manager -- bad practice
-    public class Game
+    public class GameTable
     {
         readonly List<CardColumn> columns = new();
         readonly List<SymbolPackage> packs = new();
@@ -15,6 +16,12 @@ namespace Pasjans
         Cursor cursor;
         CommandHistory history = new();
 
+        public IReadOnlyList<CardColumn> Columns => columns;
+        public IReadOnlyList<SymbolPackage> Packs => packs;
+        public CardRestock Restock => restock;
+        public CardTemp CardTemp => cardTemp;
+        public Cursor Cursor => cursor;
+
         readonly public int ColumnsAmountExcluding;
         readonly public int DeepestColumn;
         // Difficulty
@@ -23,20 +30,21 @@ namespace Pasjans
 
 
         // no acces, only for give cards to columns and give cards to restock
-        public Game(Cursor cursor, CardDeck deck, int columnsAmountExcluding = 8)
+        public GameTable(Cursor cursor, CardDeck deck, int columnAmountExluding = 8)
         {
             this.cursor = cursor;
 
-            this.ColumnsAmountExcluding = columnsAmountExcluding;
+            this.ColumnsAmountExcluding = columnAmountExluding;
 
             deck.Shuffle();
-            DeepestColumn = columnsAmountExcluding - 1;
-            for (int i = 0; i < columnsAmountExcluding; i++)
+            DeepestColumn = columnAmountExluding - 1;
+            for (int i = 1; i <= columnAmountExluding; i++)
             {
                 LinkedList<Card> cards = new();
-                for (int j = 0; j < i; j++)
+                for (int j = 1; j < i; j++)
                 {
                     cards.AddFirst(deck.TakeCard());
+
                 }
                 CardColumn newColumn = new CardColumn(cards);
                 columns.Add(newColumn);
@@ -66,7 +74,7 @@ namespace Pasjans
             //rysujemy columny
             for (int i = columns.Count - 1; i >= 0; i--)
             {
-                cardRender.DrawColumn(new Vector2(0, i * cardRender.cardWidth - cardRender.cardWidth), columns[i].GetListUnkown());
+                cardRender.DrawColumn(new Vector2(0, i * cardRender.cardWidth), columns[i].GetListUnkown());
             }
             // rysujemy stosy
             var symbols = Enum.GetValues(typeof(CardSymbol));
@@ -105,9 +113,9 @@ namespace Pasjans
 
             screen.Display();
         }
-        public Game Clone()
+        public GameTable Clone()
         {
-            throw new NotImplementedException();
+            return this;
         }
         public void Undo()
         {
@@ -128,7 +136,7 @@ namespace Pasjans
             {
                 if (cardTemp.isEmpty())
                 {
-                    //ExecuteCommand(); take command 
+                    ExecuteCommand(new TakeCommand(this), x, y, (ITake)columns.ElementAt(x));
                 }
                 else
                 {
@@ -155,18 +163,39 @@ namespace Pasjans
             }
 
         }
-        /*
-        void ExecuteCommand(Command command)
+        void ExecuteCommand(Command command, int x, int y)
         {
-            if (command.Execute())
+            if (command.Execute(x, y))
             {
                 history.push(command);
             }
         }
-        */
+        void ExecuteCommand(Command command, int x, int y, ITake source)
+        {
+            if (command.Execute(x, y, source))
+            {
+                history.push(command);
+            }
+        }
+        void ExecuteCommand(Command command, int x, int y, IPut dest)
+        {
+            if (command.Execute(x, y, dest))
+            {
+                history.push(command);
+            }
+        }
         void EndGame()
         {
             OnGameEnd?.Invoke();
+        }
+        public override string ToString()
+        {
+            string o = "";
+            foreach (var item in columns)
+            {
+                o += item + "\n";
+            }
+            return o;
         }
     }
 }

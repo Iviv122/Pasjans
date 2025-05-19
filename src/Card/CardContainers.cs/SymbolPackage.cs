@@ -1,7 +1,7 @@
 namespace Pasjans
 {
     // Place where we collet our final cards
-    class SymbolPackage 
+    public class SymbolPackage 
     {
         int nextValue = Card.MinValue;
         CardSymbol cardSymbol;

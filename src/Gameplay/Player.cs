@@ -4,17 +4,17 @@ namespace Pasjans
 {
     class Player
     {
-        Game game;
+        GameTable game;
         Cursor cursor;
-        Command[,] commands;
         int maxX;
         int maxY;
-        public Player(Game game, Cursor cursor)
+        public Player(GameTable game, Cursor cursor)
         {
             this.cursor = cursor;
+            this.game = game;
             cursor.OnUse += Execute;
 
-            maxX = game.ColumnsAmountExcluding - 2;
+            maxX = game.ColumnsAmountExcluding - 1;
             maxY = game.DeepestColumn;
         }
         public void Input()
