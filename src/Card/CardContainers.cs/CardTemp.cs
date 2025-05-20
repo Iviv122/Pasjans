@@ -23,16 +23,30 @@ namespace Pasjans
         {
             cards = new();
         }
-
+        public CardTemp(LinkedList<Card> cards)
+        {
+            this.cards = cards;
+        }
+        public CardTemp Clone()
+        {
+            LinkedList<Card> Ncards = new();
+            foreach (var item in cards)
+            {
+                Ncards.AddLast(item); 
+            }
+            return new CardTemp(Ncards);
+        }
         public void Add(LinkedList<Card>? nCards)
         {
-            if (nCards == null ||nCards.Count == 0) {
+            if (nCards == null || nCards.Count == 0)
+            {
                 return;
             }
             cards = nCards;
         }
         public LinkedList<Card> Take()
         {
+
             LinkedList<Card> taken = cards;
             cards = new();
             return taken;

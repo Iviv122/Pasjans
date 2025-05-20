@@ -13,8 +13,10 @@ namespace Pasjans
             this.cursor = cursor;
             this.game = game;
             cursor.OnUse += Execute;
+            cursor.OnUndo += Undo;
 
-            maxX = game.ColumnsAmountExcluding - 1;
+            // columns, packs, spaces, 
+            maxX = game.ColumnsAmountExcluding + game.Packs.Count + 3;
             maxY = game.DeepestColumn;
         }
         public void Input()
@@ -39,7 +41,11 @@ namespace Pasjans
         }
         public void Execute()
         {
-            game.ExecuteCommand(cursor.X,cursor.Y);
+            game.ExecuteCommand(cursor.X, cursor.Y);
+        }
+        public void Undo()
+        {
+            game.Undo();
         }
     }
 }

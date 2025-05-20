@@ -1,5 +1,3 @@
-using System.ComponentModel;
-using System.Dynamic;
 using IO;
 
 namespace Pasjans
@@ -7,12 +5,12 @@ namespace Pasjans
     // Entry Point and Installer + Manager -- bad practice
     public class GameTable
     {
-        readonly List<CardColumn> columns = new();
-        readonly List<SymbolPackage> packs = new();
-        readonly CardRestock restock;
-        readonly Screen screen = new();
-        readonly CardDrawer cardRender;
-        readonly CardTemp cardTemp = new();
+        List<CardColumn> columns = new();
+        List<SymbolPackage> packs = new();
+        CardRestock restock;
+        Screen screen = new();
+        CardDrawer cardRender;
+        CardTemp cardTemp = new();
         Cursor cursor;
         CommandHistory history = new();
 
@@ -37,7 +35,7 @@ namespace Pasjans
             this.ColumnsAmountExcluding = columnAmountExluding;
 
             deck.Shuffle();
-            DeepestColumn = columnAmountExluding - 1;
+            DeepestColumn = Card.MaxValue;
             for (int i = 1; i <= columnAmountExluding; i++)
             {
                 LinkedList<Card> cards = new();
@@ -60,6 +58,22 @@ namespace Pasjans
             }
             cardRender = new(screen);
         }
+        // we use this for clone method
+        private GameTable(Cursor cursor, List<CardColumn> columns, List<SymbolPackage> packs, CardRestock restock, CardTemp cardTemp, CommandHistory history)
+        {
+            this.cursor = cursor;
+            foreach (CardColumn item in columns)
+            {
+                this.columns.Add(item.Clone());
+            }
+            foreach (SymbolPackage item in packs)
+            {
+                this.packs.Add(item.Clone());
+            }
+            this.restock = restock.Clone();
+            this.cardTemp = cardTemp.Clone();
+            this.history = history.Clone();
+        }
 
         public void GameLoop()
         {
@@ -76,15 +90,23 @@ namespace Pasjans
             {
                 cardRender.DrawColumn(new Vector2(0, i * cardRender.cardWidth), columns[i].GetListUnkown());
             }
-            // rysujemy stosy
-            var symbols = Enum.GetValues(typeof(CardSymbol));
-            for (int i = 0; i < symbols.Length; i++)
-            {
-                cardRender.DrawCardWithSymbol(new Vector2(i * cardRender.cardWidth, DeepestColumn * cardRender.cardHeight), (CardSymbol)symbols.GetValue(i));
-            }
 
+            Vector2 reservePos = new Vector2(cardRender.cardWidth * ColumnsAmountExcluding + cardRender.cardWidth, 0);
+            // rysujemy stosy
+            for (int i = 0; i < packs.Count; i++)
+            {
+                if (packs.ElementAt(i).NextCardValue() == Card.MinValue)
+                {
+                    cardRender.DrawCardWithSymbol(reservePos, packs.ElementAt(i).CardSymbol);
+                }
+                else
+                {
+                    cardRender.DrawCard(reservePos, new Card(packs.ElementAt(i).Value(), packs.ElementAt(i).CardSymbol));
+                }
+                reservePos.X += cardRender.cardWidth;
+            }
+            reservePos.X += cardRender.cardWidth;
             // rysujemy rezerwowy 
-            Vector2 reservePos = new Vector2(symbols.Length * cardRender.cardWidth + cardRender.cardWidth, DeepestColumn * cardRender.cardHeight);
             if (restock.PeekCardCurrent() != null)
             {
                 cardRender.DrawUnknownCard(reservePos);
@@ -106,16 +128,25 @@ namespace Pasjans
             // rysujemy wzięte karty
             if (cardTemp.Peek() != null)
             {
-                cardRender.DrawColumn(new Vector2(0, cardRender.cardWidth * ColumnsAmountExcluding), new(cardTemp.Peek(), 0), ConsoleColor.Blue);
+                cardRender.DrawColumn(new Vector2(0, 0), new(cardTemp.Peek(), 0), ConsoleColor.Blue);
             }
             // rysujemy cursor ostantim dla override 
-            cardRender.DrawCardCoursour(new Vector2(cursor.X * cardRender.cardWidth, cursor.Y * cardRender.cardHeight), ConsoleColor.Green);
+            cardRender.DrawCardCoursour(new Vector2(cursor.X * cardRender.cardWidth, cursor.Y * cardRender.cardOffset), ConsoleColor.Green);
 
             screen.Display();
         }
         public GameTable Clone()
         {
-            return this;
+            //throw new NotImplementedException();
+            return new GameTable(cursor, columns, packs, restock, cardTemp, history);
+        }
+        public void Restore(GameTable table)
+        {
+            columns = table.columns;
+            packs = table.packs;
+            restock = table.restock;
+            cardTemp = table.CardTemp;
+            history = table.history;
         }
         public void Undo()
         {
@@ -123,10 +154,6 @@ namespace Pasjans
             if (command != null)
             {
                 command.undo();
-            }
-            else
-            {
-                System.Console.WriteLine("At last Change");
             }
         }
         public void ExecuteCommand(int x, int y)
@@ -140,24 +167,26 @@ namespace Pasjans
                 }
                 else
                 {
-                    //ExecuteCommand();  put command 
+                    ExecuteCommand(new PutCommand(this), x, y, (IPut)columns.ElementAt(x));
                 }
             }
             else // 7 row
             {
                 if (x < packs.Count) // 4
                 {
-                    //ExecuteCommand(); try put command; // 0,1,2,3 
+
+                    ExecuteCommand(new PutCommand(this), x, y, packs.ElementAt(x));
+
                 }
                 else if (x > packs.Count) // 4
                 {
                     if (x == packs.Count + 1)
                     {
-                        // ExecuteCommand(); // 5
+                        restock.Next();
                     }
-                    else
+                    else if (x == packs.Count + 2)
                     {
-                        // ExecuteCommand(); // 6   
+                        ExecuteCommand(new TakeCommand(this), x, y, restock); // ExecuteCommand(); // 6   
                     }
                 }
             }
@@ -197,5 +226,6 @@ namespace Pasjans
             }
             return o;
         }
+
     }
 }

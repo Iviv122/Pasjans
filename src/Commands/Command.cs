@@ -18,7 +18,7 @@ namespace Pasjans
         }
         public void undo()
         {
-            game = backup;
+            game.Restore(backup);
         }
         virtual public bool Execute(int x, int y)
         {

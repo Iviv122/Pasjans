@@ -1,37 +1,61 @@
 namespace Pasjans
 {
     // Place where we collet our final cards
-    public class SymbolPackage 
+    public class SymbolPackage : IPut
     {
         int nextValue = Card.MinValue;
         CardSymbol cardSymbol;
-        public CardSymbol CardSymbol{
-            get{ return cardSymbol;}
+        public CardSymbol CardSymbol
+        {
+            get { return cardSymbol; }
         }
-        public SymbolPackage(CardSymbol symbol){
+        public SymbolPackage(CardSymbol symbol)
+        {
             cardSymbol = symbol;
         }
-        public ActionResponse<String> AddCard(Card card){
-            if(cardSymbol != card.Symbol){
-                return new ActionResponse<string>("Incorrect Symbol");
-            }
-            if(card.Value != nextValue){
-                return new ActionResponse<string>("Incorrect place order");
-            }
-            nextValue+=1;
-            return new ActionResponse<string>("Card was submitted");
+        public SymbolPackage(CardSymbol symbol, int nextValue)
+        {
+            cardSymbol = symbol;
+            this.nextValue = nextValue;
         }
-        public int NextCardValue(){
+        public SymbolPackage Clone()
+        {
+            return new SymbolPackage(cardSymbol,nextValue);
+        }
+        public void Put(LinkedList<Card> cards)
+        {
+            if (cards == null || cards.Count == 0 || cards.Count > 1)
+            {
+                return;
+            }
+            if (cardSymbol != cards.ElementAt(0).Symbol)
+            {
+                return;
+            }
+            if (cards.ElementAt(0).Value != nextValue)
+            {
+                return;
+            }
+            cards.Remove(cards.ElementAt(0));
+            nextValue += 1;
+        }
+        public int NextCardValue()
+        {
             return nextValue;
+        }
+        public int Value()
+        {
+            return nextValue - 1;
         }
         public override string ToString()
         {
-            if(nextValue == Card.MinValue){
+            if (nextValue == Card.MinValue)
+            {
                 return "Empty:" + Card.SymbolToString(cardSymbol);
             }
-            Card tmpCard = new Card(nextValue-1,cardSymbol);
-            return tmpCard.ToString(); 
+            Card tmpCard = new Card(nextValue - 1, cardSymbol);
+            return tmpCard.ToString();
         }
-    } 
+    }
 
 }

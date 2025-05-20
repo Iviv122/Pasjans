@@ -3,7 +3,7 @@ namespace IO
     class Screen
     {
         // Create a 2D char array with dimensions height = 30, width = 100
-        int width = 120;
+        int width = 140;
         int height = 35;
         private Point[,] screen;
 

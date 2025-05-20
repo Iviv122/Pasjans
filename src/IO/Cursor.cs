@@ -9,6 +9,7 @@ namespace IO
         int jumpsizeY;
 
         public event Action? OnUse;
+        public event Action? OnUndo;
 
         public Cursor(int jumpsizeX, int jumpsizeY)
         {
@@ -40,11 +41,18 @@ namespace IO
                 case ConsoleKey.Enter:
                     Use();
                     break;
+                case ConsoleKey.Z:
+                    Undo();
+                    break;
             }
         }
         void Use()
         {
             OnUse?.Invoke();
+        }
+        void Undo()
+        {
+            OnUndo?.Invoke();
         }
     }
 

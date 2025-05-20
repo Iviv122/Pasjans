@@ -257,7 +257,7 @@ namespace IO
         {
             for (int i = 0; i < column.Item1.Count; i++)
             {
-                Vector2 cardPos = new Vector2(pos.Y, pos.X + i * cardHeight);
+                Vector2 cardPos = new Vector2(pos.Y, pos.X + i * cardOffset);
 
                 if (i < column.Item2)
                 {

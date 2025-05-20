@@ -1,0 +1,15 @@
+/home/van/Pasjans/src/bin/Debug/net6.0/src
+/home/van/Pasjans/src/bin/Debug/net6.0/src.deps.json
+/home/van/Pasjans/src/bin/Debug/net6.0/src.runtimeconfig.json
+/home/van/Pasjans/src/bin/Debug/net6.0/src.dll
+/home/van/Pasjans/src/bin/Debug/net6.0/src.pdb
+/home/van/Pasjans/src/obj/Debug/net6.0/src.csproj.AssemblyReference.cache
+/home/van/Pasjans/src/obj/Debug/net6.0/src.GeneratedMSBuildEditorConfig.editorconfig
+/home/van/Pasjans/src/obj/Debug/net6.0/src.AssemblyInfoInputs.cache
+/home/van/Pasjans/src/obj/Debug/net6.0/src.AssemblyInfo.cs
+/home/van/Pasjans/src/obj/Debug/net6.0/src.csproj.CoreCompileInputs.cache
+/home/van/Pasjans/src/obj/Debug/net6.0/src.dll
+/home/van/Pasjans/src/obj/Debug/net6.0/refint/src.dll
+/home/van/Pasjans/src/obj/Debug/net6.0/src.pdb
+/home/van/Pasjans/src/obj/Debug/net6.0/src.genruntimeconfig.cache
+/home/van/Pasjans/src/obj/Debug/net6.0/ref/src.dll

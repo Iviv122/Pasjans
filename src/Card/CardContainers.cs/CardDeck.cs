@@ -13,7 +13,7 @@ namespace Pasjans
 
             foreach (CardSymbol symbol in Enum.GetValues(typeof(CardSymbol)))
             {
-                for (int value = 1; value < Card.MaxValue; value++) //add all cards from min to max 
+                for (int value = 1; value <= Card.MaxValue; value++) //add all cards from min to max 
                 {
                     cards.Add(new Card(value, symbol));
                 }

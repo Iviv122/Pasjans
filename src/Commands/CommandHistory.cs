@@ -4,16 +4,35 @@ namespace Pasjans
     {
         List<Command> history = new();
 
-        public void push(Command com){
+        public CommandHistory()
+        {
+
+        }
+        public CommandHistory(List<Command> commands)
+        {
+            history = commands;
+        }
+        public void push(Command com)
+        {
             history.Add(com);
         }
-        public Command pop(){
+        public Command pop()
+        {
             if (history.Count == 0)
                 return null; // or throw exception, depending on desired behavior
 
             Command lastCommand = history[history.Count - 1];
             history.RemoveAt(history.Count - 1);
             return lastCommand;
+        }
+        public CommandHistory Clone()
+        {
+            List<Command> NStrory = new();
+            foreach (Command i in history)
+            {
+                NStrory.Add(i); 
+            }
+            return new CommandHistory(NStrory);
         }
     }
 }
