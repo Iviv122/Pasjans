@@ -82,7 +82,7 @@ namespace Pasjans
         }
         public override bool Execute(int x, int y, IPut source)
         {
-            return Put(source, y);
+            return Next(source, y);
         }
     }
     public class UndoCommand : Command
