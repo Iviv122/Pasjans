@@ -186,7 +186,7 @@ namespace Pasjans
             x -= packs.Count + 1;
             if (x == 0) // 14,15
             {
-                ExecuteCommand(new NextCommand(this), x, y, restock); // ExecuteCommand(); // 6 
+                ExecuteCommand(new NextCommand(this),x,y); // ExecuteCommand(); // 6 
                 return;
             }
             else

@@ -76,13 +76,14 @@ namespace Pasjans
 
         }
         // zrodlo to cardTemp
-        public bool Next(IPut dest, int indexY)
+        public bool Next()
         {
+            game.Restock.Next();
             return true;
         }
-        public override bool Execute(int x, int y, IPut source)
+        public override bool Execute(int x, int y)
         {
-            return Next(source, y);
+            return Next();
         }
     }
     public class UndoCommand : Command
