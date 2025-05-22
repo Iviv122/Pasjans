@@ -34,7 +34,7 @@ namespace Pasjans
 
             this.ColumnsAmountExcluding = columnAmountExluding;
 
-            deck.Shuffle();
+            //deck.Shuffle();
             DeepestColumn = Card.MaxValue;
             for (int i = 1; i <= columnAmountExluding; i++)
             {
@@ -83,8 +83,9 @@ namespace Pasjans
         public void Draw()
         {
             // wyczysc żeby było puste
-            screen.ClearScreen();
+
             screen.ClearConsole();
+            screen.ClearScreen();
             //rysujemy columny
             for (int i = columns.Count - 1; i >= 0; i--)
             {
@@ -128,7 +129,7 @@ namespace Pasjans
             // rysujemy wzięte karty
             if (cardTemp.Peek() != null)
             {
-                cardRender.DrawColumn(reservePos, new(cardTemp.Peek(), 0), ConsoleColor.Blue);
+                cardRender.DrawColumn(new Vector2(0,0), new(cardTemp.Peek(), 0), ConsoleColor.Blue);
             }
             // rysujemy cursor ostantim dla override 
             cardRender.DrawCardCoursour(new Vector2(cursor.X * cardRender.cardWidth, cursor.Y * cardRender.cardOffset), ConsoleColor.Green);
@@ -160,10 +161,10 @@ namespace Pasjans
         {
             // bad practices alarm, too many hard coded commands reffered to current interface layout :/
 
-            System.Console.WriteLine(x);
 
             if (x < columns.Count)
             {
+
                 if (cardTemp.isEmpty())
                 {
                     ExecuteCommand(new TakeCommand(this), x, y, (ITake)columns.ElementAt(x));
@@ -176,8 +177,9 @@ namespace Pasjans
                 }
             }
             x -= columns.Count + 1;
-            if (x < packs.Count) // 9,12
+            if (x >=0 &&x < packs.Count) // 9,12
             {
+
                 ExecuteCommand(new PutCommand(this), x, y, packs.ElementAt(x));
                 return;
             }

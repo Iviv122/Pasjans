@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace IO
 {
     class Screen
@@ -14,7 +16,7 @@ namespace IO
                 return width;
             }
         }
-        public int Height 
+        public int Height
         {
             get
             {
@@ -37,7 +39,7 @@ namespace IO
         }
         ~Screen()
         {
-            Console.CursorVisible = true;    
+            Console.CursorVisible = true;
         }
         void Start()
         {
@@ -88,16 +90,33 @@ namespace IO
 
         public void Display()
         {
-            for (int y = 0; y < height; y++) // Loop rows (y-axis) first
+            var output = new StringBuilder(); // Buffer for output text
+            ConsoleColor? currentColor = null;
+
+            for (int y = 0; y < height; y++)
             {
-                for (int x = 0; x < width; x++) // Then columns (x-axis)
+                for (int x = 0; x < width; x++)
                 {
-                    Console.ForegroundColor = screen[y, x].Color; // Assumes screen[x,y].Color is ConsoleColor
-                    Console.Write(screen[y, x].Value);       // Assumes .ToString() returns correct char or string
+                    var cell = screen[y, x];
+                    if (cell.Color != currentColor)
+                    {
+                        // Flush buffer to console when color changes
+                        Console.Write(output.ToString());
+                        output.Clear();
+
+                        Console.ForegroundColor = cell.Color;
+                        currentColor = cell.Color;
+                    }
+                    output.Append(cell.Value);
                 }
-                Console.WriteLine(); // Better than "\n" for console output
+                output.AppendLine(); // Add newline after each row
             }
-            Console.ResetColor(); // Reset console color after drawing
+
+            // Flush remaining output
+            Console.Write(output.ToString());
+
+            Console.ResetColor();
         }
+
     }
 }
