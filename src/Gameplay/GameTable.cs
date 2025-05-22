@@ -128,7 +128,7 @@ namespace Pasjans
             // rysujemy wzięte karty
             if (cardTemp.Peek() != null)
             {
-                cardRender.DrawColumn(new Vector2(0, 0), new(cardTemp.Peek(), 0), ConsoleColor.Blue);
+                cardRender.DrawColumn(reservePos, new(cardTemp.Peek(), 0), ConsoleColor.Blue);
             }
             // rysujemy cursor ostantim dla override 
             cardRender.DrawCardCoursour(new Vector2(cursor.X * cardRender.cardWidth, cursor.Y * cardRender.cardOffset), ConsoleColor.Green);
@@ -159,38 +159,39 @@ namespace Pasjans
         public void ExecuteCommand(int x, int y)
         {
             // bad practices alarm, too many hard coded commands reffered to current interface layout :/
-            if (y < DeepestColumn) // 0 - 6 rows 
+
+            System.Console.WriteLine(x);
+
+            if (x < columns.Count)
             {
                 if (cardTemp.isEmpty())
                 {
                     ExecuteCommand(new TakeCommand(this), x, y, (ITake)columns.ElementAt(x));
+                    return;
                 }
                 else
                 {
                     ExecuteCommand(new PutCommand(this), x, y, (IPut)columns.ElementAt(x));
+                    return;
                 }
             }
-            else // 7 row
+            x -= columns.Count + 1;
+            if (x < packs.Count) // 9,12
             {
-                if (x < packs.Count) // 4
-                {
-
-                    ExecuteCommand(new PutCommand(this), x, y, packs.ElementAt(x));
-
-                }
-                else if (x > packs.Count) // 4
-                {
-                    if (x == packs.Count + 1)
-                    {
-                        restock.Next();
-                    }
-                    else if (x == packs.Count + 2)
-                    {
-                        ExecuteCommand(new TakeCommand(this), x, y, restock); // ExecuteCommand(); // 6   
-                    }
-                }
+                ExecuteCommand(new PutCommand(this), x, y, packs.ElementAt(x));
+                return;
             }
-
+            x -= packs.Count + 1;
+            if (x == 0) // 14,15
+            {
+                restock.Next();
+                return;
+            }
+            else
+            {
+                ExecuteCommand(new TakeCommand(this), x, y, restock); // ExecuteCommand(); // 6   
+                return;
+            }
         }
         void ExecuteCommand(Command command, int x, int y)
         {
