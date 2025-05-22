@@ -26,7 +26,18 @@ namespace Pasjans
         }
         public CardRestock Clone()
         {
-            return new CardRestock(_currentCards, _leftedCards);
+            List<Card> _NcurrentCards = new();
+            LinkedList<Card> _LeftedCards = new();
+
+            foreach (var item in _currentCards)
+            {
+                _NcurrentCards.Add(item);
+            }
+            foreach (var item in _leftedCards)
+            {
+                _LeftedCards.AddLast(item);
+            }
+            return new CardRestock(_NcurrentCards, _LeftedCards);
         }
         public Card? PeekCardCurrent()
         {

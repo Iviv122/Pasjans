@@ -59,20 +59,13 @@ namespace Pasjans
             cardRender = new(screen);
         }
         // we use this for clone method
-        private GameTable(Cursor cursor, List<CardColumn> columns, List<SymbolPackage> packs, CardRestock restock, CardTemp cardTemp, CommandHistory history)
+        private GameTable(Cursor cursor, List<CardColumn> columns, List<SymbolPackage> packs, CardRestock restock, CardTemp cardTemp)
         {
             this.cursor = cursor;
-            foreach (CardColumn item in columns)
-            {
-                this.columns.Add(item.Clone());
-            }
-            foreach (SymbolPackage item in packs)
-            {
-                this.packs.Add(item.Clone());
-            }
-            this.restock = restock.Clone();
-            this.cardTemp = cardTemp.Clone();
-            this.history = history.Clone();
+            this.columns = columns;
+            this.packs = packs;
+            this.restock = restock;
+            this.cardTemp = cardTemp;
         }
 
         public void GameLoop()
@@ -129,7 +122,7 @@ namespace Pasjans
             // rysujemy wzięte karty
             if (cardTemp.Peek() != null)
             {
-                cardRender.DrawColumn(new Vector2(0,0), new(cardTemp.Peek(), 0), ConsoleColor.Blue);
+                cardRender.DrawColumn(new Vector2(0, 0), new(cardTemp.Peek(), 0), ConsoleColor.Blue);
             }
             // rysujemy cursor ostantim dla override 
             cardRender.DrawCardCoursour(new Vector2(cursor.X * cardRender.cardWidth, cursor.Y * cardRender.cardOffset), ConsoleColor.Green);
@@ -138,16 +131,27 @@ namespace Pasjans
         }
         public GameTable Clone()
         {
+
+            List<CardColumn> Ncolumns = new();
+            List<SymbolPackage> NPackage = new();
             //throw new NotImplementedException();
-            return new GameTable(cursor, columns, packs, restock, cardTemp, history);
+            foreach (CardColumn item in columns)
+            {
+                Ncolumns.Add(item.Clone());
+            }
+            foreach (SymbolPackage item in packs)
+            {
+                NPackage.Add(item.Clone());
+            }
+            return new GameTable(cursor, Ncolumns, NPackage, restock.Clone(), cardTemp.Clone());
         }
         public void Restore(GameTable table)
         {
-            columns = table.columns;
-            packs = table.packs;
-            restock = table.restock;
-            cardTemp = table.CardTemp;
-            history = table.history;
+            columns = table.columns.Select(c => c.Clone()).ToList();
+            packs = table.packs.Select(p => p.Clone()).ToList();
+            restock = table.restock.Clone();
+            cardTemp = table.cardTemp.Clone();
+
         }
         public void Undo()
         {
@@ -177,7 +181,7 @@ namespace Pasjans
                 }
             }
             x -= columns.Count + 1;
-            if (x >=0 &&x < packs.Count) // 9,12
+            if (x >= 0 && x < packs.Count) // 9,12
             {
 
                 ExecuteCommand(new PutCommand(this), x, y, packs.ElementAt(x));
@@ -186,7 +190,7 @@ namespace Pasjans
             x -= packs.Count + 1;
             if (x == 0) // 14,15
             {
-                ExecuteCommand(new NextCommand(this),x,y); // ExecuteCommand(); // 6 
+                ExecuteCommand(new NextCommand(this), x, y); // ExecuteCommand(); // 6 
                 return;
             }
             else

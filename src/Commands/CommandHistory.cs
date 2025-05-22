@@ -21,8 +21,8 @@ namespace Pasjans
             if (history.Count == 0)
                 return null; // or throw exception, depending on desired behavior
 
-            Command lastCommand = history[history.Count - 1];
-            history.RemoveAt(history.Count - 1);
+            Command lastCommand = history.Last();
+            history.Remove(lastCommand);
             return lastCommand;
         }
         public CommandHistory Clone()
