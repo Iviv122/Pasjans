@@ -79,6 +79,12 @@ namespace Pasjans
         public bool Next()
         {
             game.Restock.Next();
+            if (game.Difficulty == Difficulty.Hard)
+            {
+                game.Restock.Next();
+                game.Restock.Next();
+            }
+
             return true;
         }
         public override bool Execute(int x, int y)

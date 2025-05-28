@@ -1,7 +1,4 @@
-using System.Formats.Asn1;
-using System.Runtime.InteropServices;
 using IO;
-using Menu;
 using Menu.ButtonDrawer;
 
 namespace Pasjans
@@ -19,6 +16,8 @@ namespace Pasjans
         CommandHistory history = new();
         ButtonDraw buttonDraw;
 
+        Difficulty difficulty;
+        public Difficulty Difficulty => difficulty;
         public IReadOnlyList<CardColumn> Columns => columns;
         public IReadOnlyList<SymbolPackage> Packs => packs;
         public CardRestock Restock => restock;
@@ -89,14 +88,15 @@ namespace Pasjans
             cardRender = new(screen);
             this.screen = screen;
         }
-        // we use this for clone method
         public void SetDifficulty(Difficulty level)
         {
             switch (level)
             {
                 case Difficulty.Easy:
+                    difficulty = level;
                     break;
                 case Difficulty.Hard:
+                    difficulty = level;
                     break;
             }
         }
