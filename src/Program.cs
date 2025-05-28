@@ -1,26 +1,21 @@
 ﻿// Punkt wejsczowy do programu 
 
-using IO;
 using Pasjans;
 
-class Program
+class Program 
 {
     static void Main(string[] args)
     {
-        Cursor cursor = new(1, 1);
-        GameTable game = new(cursor, new CardDeck());
-        Player player = new(game, cursor);
 
+        // Game game = new();
+        Game game = new();
 
         bool isPlaying = true;
-        game.OnGameEnd += () =>
-        {
-            isPlaying = false;
-        };
         while (isPlaying)
         {
-            game.GameLoop();
-            player.Input();
+            //game.GameLoop();
+            //player.Input();
+            game.Update();
         }
     }
 }

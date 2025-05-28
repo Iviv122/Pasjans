@@ -10,7 +10,7 @@ namespace IO
 
         public event Action? OnUse;
         public event Action? OnUndo;
-
+        public event Action? OnEscape;
         public Cursor(int jumpsizeX, int jumpsizeY)
         {
             this.jumpsizeX = jumpsizeX;
@@ -44,6 +44,9 @@ namespace IO
                 case ConsoleKey.Z:
                     Undo();
                     break;
+                case ConsoleKey.Escape:
+                    Escape();
+                    break;
             }
         }
         void Use()
@@ -53,6 +56,10 @@ namespace IO
         void Undo()
         {
             OnUndo?.Invoke();
+        }
+        void Escape()
+        {
+            OnEscape?.Invoke();
         }
     }
 

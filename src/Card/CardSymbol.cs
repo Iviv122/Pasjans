@@ -4,8 +4,8 @@ namespace Pasjans
     public enum CardSymbol
     {
         Clubs,
-        Diamonds,
         Hearts,
-        Spades
+        Spades,
+        Diamonds,
     }
 }

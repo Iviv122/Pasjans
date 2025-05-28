@@ -10,7 +10,9 @@ namespace Pasjans
         public Command(GameTable game)
         {
             this.game = game;
+        
             saveBackup();
+            game.TurnsMade++;
         }
         public void saveBackup()
         {

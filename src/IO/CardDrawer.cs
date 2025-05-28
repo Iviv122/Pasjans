@@ -37,7 +37,48 @@ namespace IO
                 throw new ArgumentException("to short offset");
             }
         }
+        public void DrawCard(Vector2 pos, Card card,Screen screen)
+        {
+            ConsoleColor color = (card.Color == CardColor.Red) ? ConsoleColor.Red : ConsoleColor.White;
 
+            Point[,] content = new Point[cardHeight, cardWidth];
+
+            string cardString = card.ToString();
+            cardString = cardString.Length > 3 ? cardString.Substring(0, 3) : cardString.PadRight(3);
+
+            for (int y = 0; y < cardHeight; y++)
+            {
+                for (int x = 0; x < cardWidth; x++)
+                {
+                    // Corners
+                    if ((x == 0 || x == cardWidth - 1) && (y == 0 || y == cardHeight - 1))
+                    {
+                        content[y, x] = new Point('+', color);
+                    }
+                    // Vertical borders
+                    else if (x == 0 || x == cardWidth - 1)
+                    {
+                        content[y, x] = new Point('|', color);
+                    }
+                    // Horizontal borders
+                    else if (y == 0 || y == cardHeight - 1)
+                    {
+                        content[y, x] = new Point('-', color);
+                    }
+                    // Card label centered in second row (y == 1)
+                    else if (y == 1 && x >= 1 && x <= 3)
+                    {
+                        int labelIndex = x - 1;
+                        content[y, x] = new Point(cardString[labelIndex], color);
+                    }
+                    else
+                    {
+                        content[y, x] = new Point(' ', color);
+                    }
+                }
+            }
+            screen.Place(pos, content);
+        }
         public void DrawCard(Vector2 pos, Card card)
         {
             ConsoleColor color = (card.Color == CardColor.Red) ? ConsoleColor.Red : ConsoleColor.White;
@@ -220,7 +261,7 @@ namespace IO
             }
             screen.Place(pos, content);
         }
-        public void DrawUnknownCard(Vector2 pos,ConsoleColor color = ConsoleColor.White)
+        public void DrawUnknownCard(Vector2 pos, ConsoleColor color = ConsoleColor.White)
         {
 
             Point[,] content = new Point[cardHeight, cardWidth];
@@ -277,11 +318,11 @@ namespace IO
 
                 if (i < column.Item2)
                 {
-                    DrawUnknownCard(cardPos,borderColor);
+                    DrawUnknownCard(cardPos, borderColor);
                 }
                 else
                 {
-                    DrawCard(cardPos, column.Item1.ElementAt(i),borderColor);
+                    DrawCard(cardPos, column.Item1.ElementAt(i), borderColor);
                 }
             }
         }

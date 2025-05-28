@@ -1,4 +1,8 @@
+using System.Formats.Asn1;
+using System.Runtime.InteropServices;
 using IO;
+using Menu;
+using Menu.ButtonDrawer;
 
 namespace Pasjans
 {
@@ -8,11 +12,12 @@ namespace Pasjans
         List<CardColumn> columns = new();
         List<SymbolPackage> packs = new();
         CardRestock restock;
-        Screen screen = new();
+        Screen screen;
         CardDrawer cardRender;
         CardTemp cardTemp = new();
         Cursor cursor;
         CommandHistory history = new();
+        ButtonDraw buttonDraw;
 
         public IReadOnlyList<CardColumn> Columns => columns;
         public IReadOnlyList<SymbolPackage> Packs => packs;
@@ -24,14 +29,33 @@ namespace Pasjans
         readonly public int DeepestColumn;
         // Difficulty
 
+        // how many packs left
+        int PackCounter = 0;
+        // ile tur zrobiono
+        int turnsMade = 0;
+        public int TurnsMade 
+        {
+            get { return turnsMade; }
+            set
+            {
+                if (value <= 0)
+                {
+                    turnsMade = 0;
+                }
+                else
+                {
+                    turnsMade = value;
+                }
+            }
+        }
         public event Action? OnGameEnd;
-
+        public event Action? OnGameExit;
 
         // no acces, only for give cards to columns and give cards to restock
-        public GameTable(Cursor cursor, CardDeck deck, int columnAmountExluding = 8)
+        public GameTable(Cursor cursor, CardDeck deck, Screen screen, int columnAmountExluding = 8)
         {
             this.cursor = cursor;
-
+            this.buttonDraw = new(screen);
             this.ColumnsAmountExcluding = columnAmountExluding;
 
             //deck.Shuffle();
@@ -50,22 +74,40 @@ namespace Pasjans
             }
             restock = new CardRestock(deck.TakeRemainingCards());
 
-            CardSymbol[] symbols = (CardSymbol[])Enum.GetValues(typeof(CardSymbol));
+            //CardSymbol[] symbols = (CardSymbol[])Enum.GetValues(typeof(CardSymbol));
+
+            CardSymbol[] symbols = {CardSymbol.Clubs};
 
             foreach (var item in symbols)
             {
-                packs.Add(new SymbolPackage(item));
+                SymbolPackage package = new(item);
+                package.OnCardFill += TryWin;
+                packs.Add(package);
+
+                PackCounter++;
             }
             cardRender = new(screen);
+            this.screen = screen;
         }
         // we use this for clone method
-        private GameTable(Cursor cursor, List<CardColumn> columns, List<SymbolPackage> packs, CardRestock restock, CardTemp cardTemp)
+        public void SetDifficulty(Difficulty level)
+        {
+            switch (level)
+            {
+                case Difficulty.Easy:
+                    break;
+                case Difficulty.Hard:
+                    break;
+            }
+        }
+        private GameTable(Cursor cursor, List<CardColumn> columns, List<SymbolPackage> packs, CardRestock restock, CardTemp cardTemp, int turnsMade)
         {
             this.cursor = cursor;
             this.columns = columns;
             this.packs = packs;
             this.restock = restock;
             this.cardTemp = cardTemp;
+            this.turnsMade = turnsMade;
         }
 
         public void GameLoop()
@@ -73,7 +115,16 @@ namespace Pasjans
             Draw();
         }
 
-        public void Draw()
+        public void TryWin()
+        {
+            PackCounter--;
+            if (PackCounter == 0)
+            {
+                OnGameEnd?.Invoke();
+            }
+        }
+
+        private void Draw()
         {
             // wyczysc żeby było puste
 
@@ -127,6 +178,8 @@ namespace Pasjans
             // rysujemy cursor ostantim dla override 
             cardRender.DrawCardCoursour(new Vector2(cursor.X * cardRender.cardWidth, cursor.Y * cardRender.cardOffset), ConsoleColor.Green);
 
+            buttonDraw.DrawButton(new Vector2(reservePos.X, 20), new Vector2(20, 3),$"Turns: {turnsMade}");
+
             screen.Display();
         }
         public GameTable Clone()
@@ -143,7 +196,7 @@ namespace Pasjans
             {
                 NPackage.Add(item.Clone());
             }
-            return new GameTable(cursor, Ncolumns, NPackage, restock.Clone(), cardTemp.Clone());
+            return new GameTable(cursor, Ncolumns, NPackage, restock.Clone(), cardTemp.Clone(),turnsMade);
         }
         public void Restore(GameTable table)
         {
@@ -151,7 +204,7 @@ namespace Pasjans
             packs = table.packs.Select(p => p.Clone()).ToList();
             restock = table.restock.Clone();
             cardTemp = table.cardTemp.Clone();
-
+            turnsMade = table.turnsMade;
         }
         public void Undo()
         {
@@ -166,7 +219,7 @@ namespace Pasjans
             // bad practices alarm, too many hard coded commands reffered to current interface layout :/
 
 
-            if (x < columns.Count)
+            if (x < columns.Count && x > 0)
             {
 
                 if (cardTemp.isEmpty())
@@ -233,6 +286,9 @@ namespace Pasjans
             }
             return o;
         }
-
+        public void Exit()
+        {
+            OnGameExit?.Invoke();
+        }
     }
 }

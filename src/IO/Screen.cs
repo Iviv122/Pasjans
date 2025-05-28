@@ -2,7 +2,7 @@ using System.Text;
 
 namespace IO
 {
-    class Screen
+    public class Screen
     {
         // Create a 2D char array with dimensions height = 30, width = 100
         int width = 140;
@@ -27,6 +27,7 @@ namespace IO
         {
             width = 120;
             height = 35;
+
             screen = new Point[height, width];
             Start();
         }

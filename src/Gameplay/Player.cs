@@ -6,6 +6,7 @@ namespace Pasjans
     {
         GameTable game;
         Cursor cursor;
+        public Cursor Cursor => cursor;
         int maxX;
         int maxY;
         public Player(GameTable game, Cursor cursor)
@@ -14,6 +15,7 @@ namespace Pasjans
             this.game = game;
             cursor.OnUse += Execute;
             cursor.OnUndo += Undo;
+            cursor.OnEscape += Exit;
 
             // columns, packs, spaces, 
             maxX = game.ColumnsAmountExcluding + game.Packs.Count + 3;
@@ -47,5 +49,10 @@ namespace Pasjans
         {
             game.Undo();
         }
+        public void Exit()
+        {
+            game.Exit();
+        }
     }
+
 }

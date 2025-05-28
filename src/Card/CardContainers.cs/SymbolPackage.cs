@@ -5,6 +5,7 @@ namespace Pasjans
     {
         int nextValue = Card.MinValue;
         CardSymbol cardSymbol;
+        public event Action OnCardFill;
         public CardSymbol CardSymbol
         {
             get { return cardSymbol; }
@@ -37,7 +38,14 @@ namespace Pasjans
                 return;
             }
             cards.Remove(cards.ElementAt(0));
+
             nextValue += 1;
+
+            if (nextValue > Card.MaxValue)
+            {
+                OnCardFill?.Invoke();
+            }
+
         }
         public int NextCardValue()
         {
