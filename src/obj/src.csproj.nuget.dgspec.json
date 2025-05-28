@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/van/16-18_C#_Ivan_Skrynnik/src/src.csproj": {}
+    "/home/van/Downloads/Pasjans/src/src.csproj": {}
   },
   "projects": {
-    "/home/van/16-18_C#_Ivan_Skrynnik/src/src.csproj": {
+    "/home/van/Downloads/Pasjans/src/src.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/van/16-18_C#_Ivan_Skrynnik/src/src.csproj",
+        "projectUniqueName": "/home/van/Downloads/Pasjans/src/src.csproj",
         "projectName": "src",
-        "projectPath": "/home/van/16-18_C#_Ivan_Skrynnik/src/src.csproj",
+        "projectPath": "/home/van/Downloads/Pasjans/src/src.csproj",
         "packagesPath": "/home/van/.nuget/packages/",
-        "outputPath": "/home/van/16-18_C#_Ivan_Skrynnik/src/obj/",
+        "outputPath": "/home/van/Downloads/Pasjans/src/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/van/.nuget/NuGet/NuGet.Config"
