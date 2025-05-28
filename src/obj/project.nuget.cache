@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ciRFP5Ai6Fezfblco4By8MYgKJcgJLBEai0Gg+bhkNzjcP1gwyhpT4S8sdESIqfd0fhKg0o7GswdJrlaczpZRg==",
+  "dgSpecHash": "lAAfo3DnghlevKWZ2aVQqge2ZAEM5qcypmfT+tc5JgR6XsbJkFQgHtMYsaB+T2SXccpGAESp8jgDP63R9EjUiw==",
   "success": true,
-  "projectFilePath": "/home/van/Pasjans/src/src.csproj",
+  "projectFilePath": "/home/van/16-18_C#_Ivan_Skrynnik/src/src.csproj",
   "expectedPackageFiles": [
     "/home/van/.nuget/packages/microsoft.netcore.app.ref/6.0.8/microsoft.netcore.app.ref.6.0.8.nupkg.sha512",
     "/home/van/.nuget/packages/microsoft.aspnetcore.app.ref/6.0.8/microsoft.aspnetcore.app.ref.6.0.8.nupkg.sha512",

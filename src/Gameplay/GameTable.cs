@@ -57,7 +57,7 @@ namespace Pasjans
             this.buttonDraw = new(screen);
             this.ColumnsAmountExcluding = columnAmountExluding;
 
-            //deck.Shuffle();
+            deck.Shuffle();
             DeepestColumn = Card.MaxValue;
             for (int i = 1; i <= columnAmountExluding; i++)
             {
@@ -73,9 +73,9 @@ namespace Pasjans
             }
             restock = new CardRestock(deck.TakeRemainingCards());
 
-            //CardSymbol[] symbols = (CardSymbol[])Enum.GetValues(typeof(CardSymbol));
+            CardSymbol[] symbols = (CardSymbol[])Enum.GetValues(typeof(CardSymbol));
 
-            CardSymbol[] symbols = {CardSymbol.Clubs};
+            //CardSymbol[] symbols = {CardSymbol.Clubs};
 
             foreach (var item in symbols)
             {
